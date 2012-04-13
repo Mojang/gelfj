@@ -1,7 +1,10 @@
 apply plugin: 'java'
+apply plugin: 'maven'
 
 sourceCompatibility = 1.5
 version = '0.9.1'
+group = 'com.mojang.external'
+
 jar {
   manifest {
     attributes 'Implementation-Title': 'GELF Java Implementation', 'Implementation-Version': version
@@ -22,4 +25,12 @@ task libDir(dependsOn: assemble, type: Copy) {
   into('lib')
   from configurations.runtime
   from configurations.runtime.allArtifacts.file
+}
+
+uploadArchives {
+  repositories.mavenDeployer {
+    repository(url: repoUrl) {
+      authentication(userName: repoUser, password: repoUserPassword)
+    }
+  }
 }
